@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Enum<E extends Enum<E>> {
+public abstract class Enum<E extends Enum<E>> implements Comparable<E> {
 	private final String __name;
 	private final int __ordinal;
 	protected Enum(String name,int ordinal) {
@@ -21,5 +21,17 @@ public abstract class Enum<E extends Enum<E>> {
 		return __name.hashCode();
 	}
 	
+	public final int ordinal() {
+		return __ordinal;
+	}
+	
+	public final String name() {
+		return __name;
+	}
+	
 	protected final void finalize() {}
+	
+	public int compareTo(E other) {
+		return __ordinal-other.ordinal();
+	}
 }
