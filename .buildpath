@@ -4,4 +4,5 @@
 	<buildpathentry kind="src" path="src"/>
 	<buildpathentry kind="src" path="apis"/>
 	<buildpathentry kind="src" path="natives"/>
+	<buildpathentry kind="src" path="vm"/>
 </buildpath>
