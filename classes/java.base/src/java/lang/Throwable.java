@@ -1,10 +1,13 @@
 package java.lang;
 
+import jdk.internel.invoke.Stable;
+
 public class Throwable {
 	private String message;
+	@Stable
 	private Throwable cause;
-	private boolean suppressionEnabled;
-	private boolean writeableStackTrace;
+	private final boolean suppressionEnabled;
+	private final boolean writeableStackTrace;
 	public Throwable() {
 		this(null,null,true,true);
 	}
@@ -26,6 +29,16 @@ public class Throwable {
 		this.cause = cause;
 		this.suppressionEnabled = enableSuppression;
 		this.writeableStackTrace = writeableStackTrace;
+	}
+	
+	public Throwable initCause(Throwable cause) {
+		if(cause==this)
+			throw new IllegalArgumentException("A Throwable cannot be its own cause");
+		else if(this.cause!=null)
+			throw new IllegalStateException("This throwable already has a cause");
+		else
+			this.cause = cause;
+		return this;
 	}
 
 }

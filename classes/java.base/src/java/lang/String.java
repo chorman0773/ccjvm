@@ -1,6 +1,9 @@
 package java.lang;
 
+import jdk.internel.invoke.Stable;
+
 public final class String implements CharSequence {
+	@Stable
 	private char[] array;
 	
 	public String() {
@@ -8,7 +11,7 @@ public final class String implements CharSequence {
 	}
 	
 	public String(String s) {
-		array = s.array.clone();
+		array = s.array;
 	}
 	
 	public String(char[] c) {
@@ -22,6 +25,8 @@ public final class String implements CharSequence {
 	public static String valueOf(Object o) {
 		if(o==null)
 			return "null";
+		else if(o instanceof String)
+			return (String)o;
 		else
 			return o.toString();
 	}
@@ -47,6 +52,10 @@ public final class String implements CharSequence {
 	
 	public char[] toCharArray() {
 		return array.clone();
+	}
+	
+	public String toString() {
+		return this;
 	}
 	
 	public String concat(String other) {
