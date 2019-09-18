@@ -50,4 +50,9 @@ public abstract class MethodHandle {
 	
 	@SignaturePolymorphic
 	public final native Object invokeExact(Object...params) throws Throwable;
+
+	public MethodType getType() {
+		// TODO Auto-generated method stub
+		return this.type;
+	}
 }

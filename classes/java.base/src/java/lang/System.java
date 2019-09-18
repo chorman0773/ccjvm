@@ -7,5 +7,5 @@ public final class System {
 	}
 	
 	public static native void arraycopy(Object src,int srcoff,Object dest,int destoff,int length);
-
+	public static native int identityHashCode(Object o);
 }
