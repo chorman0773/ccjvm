@@ -6,7 +6,20 @@ public abstract class Unsafe {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static native Unsafe getUnsafe();
+	private static native Unsafe getUnsafe0();
 	
-
+	private static final Unsafe the_Unsafe;
+	
+	static {
+		the_Unsafe = getUnsafe0();
+	}
+	
+	public static Unsafe getUnsafe() {
+		return the_Unsafe;
+	}
+	
+	
+	
+	
+	
 }
