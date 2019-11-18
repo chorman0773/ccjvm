@@ -25,7 +25,11 @@ function JNIInterface:FindClass(name)
     return nil;
   end
   local cldef, except = libjvm.FindClassDefinition(libjvm.ContextClassLoader(),name);
-  
+  if not cldef then
+    libjvm.RaiseSynchronous(except);
+  end
+  local clobj = libjvm.GetClassObject(cldef);
+  return libjvm.toJNIObject(clobj);
 end
 
 return JNIInterface;

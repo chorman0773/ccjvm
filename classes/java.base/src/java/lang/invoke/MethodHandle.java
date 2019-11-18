@@ -1,5 +1,7 @@
 package java.lang.invoke;
 
+import jdk.internel.invoke.Stable;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,24 +11,32 @@ public abstract class MethodHandle {
 	private final MethodType type;
 	private final Class<?> target;
 	private final String linkTarget;
-	
-	static final class Virtual extends MethodHandle{
-		//invokevirtual [target].[linkTarget][type]
-		Virtual(MethodType type, Class<?> target, String linkTarget) {
-			super(type, target, linkTarget);
-			// TODO Auto-generated constructor stub
-		}
+
+	@VMRead
+	abstract void __resolve();
+
+	@Stable
+	@VMRead
+	private ResolvedObject resolved;
+
+	static abstract class ResolvedObject{
+		private ResolvedObject(){}
+		abstract boolean __is_valid();
 	}
-	
-	
-	
-	static final class Zero extends MethodHandle{
-		//Zero constant for the return type of type.
-		//Undefined behavior occurs if type has parameters.
-		Zero(MethodType type) {
-			super(type, MethodHandle.class, "invoke");
-		}
-	}
+
+
+
+	static native ResolvedObject __link_virtual(Class<?> target,String linkTarget,MethodType type);
+	static native ResolvedObject __link_static(Class<?> target,String linkTarget,MethodType type);
+	static native ResolvedObject __link_special(Class<?> target,String linkTarget,MethodType type);
+	static native ResolvedObject __link_static_field(Class<?> target,String linkTarget,MethodType type);
+	static native ResolvedObject __link_object_field(Class<?> target,String linkTarget,MethodType type);
+	static native ResolvedObject __link_signature_polymorphic(Class<?> cl,String linkTarget);
+	static native ResolvedObject __link_array_accessor(Class<?> cl);
+
+	static native ResolvedObject __bind(ResolvedObject linked,Object obj);
+
+
 	
 	
 	MethodHandle(MethodType type,Class<?> target,String linkTarget) {
@@ -44,6 +54,9 @@ public abstract class MethodHandle {
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.RUNTIME)
 	static @interface SignaturePolymorphic{}
+
+
+	static @interface VMRead{}
 	
 	@SignaturePolymorphic
 	public final native Object invoke(Object...params) throws Throwable;

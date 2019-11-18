@@ -51,7 +51,7 @@ public abstract class Reference<T> {
 	@SuppressWarnings("unchecked")
 	public T get() {
 		if(referent==null)
-			return referent;//Null is valid to have return here
+			return null;//Null is valid to have return here
 		T value = (T)strong(referent);
 		if(value==null)
 			referent = null;//Referent has been reclaimed, kill it here
